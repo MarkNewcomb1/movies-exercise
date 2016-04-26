@@ -81,12 +81,14 @@
             
             
             var arrayOfMonths = [];
-            
-            for (var j = 0; j < arrayOfMonths.length; j++) {
-                arrayOfMonths.push(rentalsArray[i].substring(8));
+            for (var j = 0; j < rentalsArray.length; j++) {
+            var delimiter = ' ';
+            var start = 2;
+            var tokens = rentalsArray[j].toString().split(delimiter).slice(start);
+            arrayOfMonths.push(tokens.join(delimiter));
             }
-            
             console.log(arrayOfMonths);
+            
             
             
             function mode(array)
