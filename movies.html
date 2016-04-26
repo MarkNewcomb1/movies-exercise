@@ -71,7 +71,36 @@
 
 			//Let's see what's inside...
 			console.log(rentalsArray);
+            console.log(rentalsArray[1]);
 
+            var arrayOfUserIds = [];
+            for (var i = 0; i < rentalsArray.length; i++) {
+                arrayOfUserIds.push(rentalsArray[i].substring(0,6));
+            }
+            console.log(arrayOfUserIds);
+            
+            function mode(array)
+            {
+                if(array.length == 0)
+                    return null;
+                var modeMap = {};
+                var maxEl = array[0], maxCount = 1;
+                for(var i = 0; i < array.length; i++)
+                {
+                    var el = array[i];
+                    if(modeMap[el] == null)
+                        modeMap[el] = 1;
+                    else
+                        modeMap[el]++;	
+                    if(modeMap[el] > maxCount)
+                    {
+                        maxEl = el;
+                        maxCount = modeMap[el];
+                    }
+                }
+                return maxEl;
+            }
+            console.log(mode(arrayOfUserIds));
 			/*
 				Okay! Let's figure out which user had the most checkouts!
 
@@ -89,7 +118,7 @@
 			*/
 
 			//Which user had the most checkouts.
-			document.getElementById('most-checkouts').innerHTML = "???";
+			document.getElementById('most-checkouts').innerHTML = mode(arrayOfUserIds);
 
 			//Which month has the most checkouts?
 			document.getElementById('most-month').innerHTML = "???";
