@@ -110,7 +110,6 @@
                         maxCount = modeMap[el];
                     }
                 }
-                console.log("The maxCount is " + maxCount);
                 return maxEl;
             }
             console.log(mode(arrayOfUserIds));
@@ -123,7 +122,7 @@
 			document.getElementById('most-checkouts').innerHTML = mode(arrayOfUserIds);
 
 			//Which month has the most checkouts?
-			document.getElementById('most-month').innerHTML = "???";
+			document.getElementById('most-month').innerHTML = mode(arrayOfMonths);
 		}
 	</script>
 </body>
