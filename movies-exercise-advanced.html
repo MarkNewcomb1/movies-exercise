@@ -95,9 +95,42 @@
 				A hint: Think about how to index your movie names so that it's easy to
 				look up which movie has which id.
 			*/
+            var arrayOfMovieIds = [];
+            for (var j = 0; j < rentalsArray.length; j++) {
+            var delimiter = ' ';
+            var start = 1;
+            var tokens = rentalsArray[j].toString().split(delimiter).slice(start, 2);
+            arrayOfMovieIds.push(tokens.join(delimiter));
+            }
+            console.log(arrayOfMovieIds);
+            
+             function mode(array)
+            {
+                if(array.length == 0)
+                    return null;
+                var modeMap = {};
+                var maxEl = array[0], maxCount = 1;
+                for(var i = 0; i < array.length; i++)
+                {
+                    var el = array[i];
+                    if(modeMap[el] == null)
+                        modeMap[el] = 1;
+                    else
+                        modeMap[el]++;	
+                    if(modeMap[el] > maxCount)
+                    {
+                        maxEl = el;
+                        maxCount = modeMap[el];
+                    }
+                }
+                return maxEl;
+            }
+            
+            var mostCheckedOutMovie = moviesArray[mode(arrayOfMovieIds) - 1];
+            console.log("array of movie ids most checked out:" + mode(arrayOfMovieIds));
 
 			//Which movie was the most checked-out movie of 2014?
-			document.getElementById('most-movie').innerHTML = "???";
+			document.getElementById('most-movie').innerHTML = mostCheckedOutMovie;
 
 			//Which movie was the least checked-out movie of 2014?
 			document.getElementById('least-movie').innerHTML = "???";
