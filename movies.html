@@ -71,13 +71,23 @@
 
 			//Let's see what's inside...
 			console.log(rentalsArray);
-            console.log(rentalsArray[1]);
 
             var arrayOfUserIds = [];
             for (var i = 0; i < rentalsArray.length; i++) {
                 arrayOfUserIds.push(rentalsArray[i].substring(0,6));
+                arrayOfUserIds[arrayOfUserIds.length - 1] = arrayOfUserIds[arrayOfUserIds.length - 1].trim();
             }
             console.log(arrayOfUserIds);
+            
+            
+            var arrayOfMonths = [];
+            
+            for (var j = 0; j < arrayOfMonths.length; j++) {
+                arrayOfMonths.push(rentalsArray[i].substring(8));
+            }
+            
+            console.log(arrayOfMonths);
+            
             
             function mode(array)
             {
@@ -98,21 +108,11 @@
                         maxCount = modeMap[el];
                     }
                 }
+                console.log("The maxCount is " + maxCount);
                 return maxEl;
             }
             console.log(mode(arrayOfUserIds));
 			/*
-				Okay! Let's figure out which user had the most checkouts!
-
-				First you'll want to go through the array, which is composed of strings,
-				and figure out how to get just the parts you want.
-			*/
-
-			/*
-				Now that we have our data in a consumable format, we just need to iterate through the
-				arrays and keep track of which user had the most checkouts.
-
-				Hint: You'll probably need to create at least one more array to keep track of checkout counts per user or per month.
 
 				Write your code to calculate the answers, and put the answers in place of the "???" below.
 			*/
