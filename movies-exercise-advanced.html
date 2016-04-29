@@ -90,53 +90,170 @@
 			//Let's see what's inside...
 			console.log(moviesArray);
 			console.log(rentalsArray);
-
-			/*
-				A hint: Think about how to index your movie names so that it's easy to
-				look up which movie has which id.
-			*/
-            var arrayOfMovieIds = [];
-            for (var j = 0; j < rentalsArray.length; j++) {
-            var delimiter = ' ';
-            var start = 1;
-            var tokens = rentalsArray[j].toString().split(delimiter).slice(start, 2);
-            arrayOfMovieIds.push(tokens.join(delimiter));
-            }
-            console.log(arrayOfMovieIds);
+			
+			//console.log(rentalsArray);
+			
+			var testRentals = [
+				"User5 44 July",
+				"User5 36 June",
+				"User7 12 May",
+				"User8 13 July"
+			];
+			
+			function splitUserRow(stringUser) {
+				return stringUser.split(" ");
+			}
+			console.log( splitUserRow(testRentals[0]) [0] == "User5");
+			console.log( splitUserRow(testRentals[0]) [1] == "44");
+			console.log( splitUserRow(testRentals[0]) [2] == "July");
+			//testRentals = testRentals.map(splitUserRow);
+			
             
-             function mode(array)
-            {
-                if(array.length == 0)
-                    return null;
-                var modeMap = {};
-                var maxEl = array[0], maxCount = 1;
-                for(var i = 0; i < array.length; i++)
-                {
-                    var el = array[i];
-                    if(modeMap[el] == null)
-                        modeMap[el] = 1;
-                    else
-                        modeMap[el]++;	
-                    if(modeMap[el] > maxCount)
-                    {
-                        maxEl = el;
-                        maxCount = modeMap[el];
+			function splitRentalString(rentalAsString) {
+				var asArrays = [];
+				for (var i = 0; i < rentalAsString.length; i++) {
+					asArrays.push(splitUserRow(rentalAsString[i]));
+				}
+				return asArrays;
+			}
+			function getKeyWithMaxValue(obj) {
+				var maxSoFar = 0;
+				var maxKeySoFar = "";
+				for (var key in obj) {
+					if (obj[key] > maxSoFar) {
+						maxSoFar = obj[key];
+						maxKeySoFar = key;
+					}
+				}
+				return maxKeySoFar;
+			}
+			
+			console.log(getKeyWithMaxValue({
+				"a" : 2,
+				"b" : 4,
+				"c" : 3
+			}) == "b");
+			
+			function getUserWithMostCheckouts(rentals) {
+				var counts = {};
+				var rentalsAsArrays = splitRentalString(rentals);
+				for (var i = 0; i < rentalsAsArrays.length; i++){
+					var userNum = rentalsAsArrays[i][0];
+					
+					if (counts[userNum] == undefined) {
+						counts[userNum] = 1;
+					} else {
+						counts[userNum] += 1;
+					}
+				}
+				
+				return getKeyWithMaxValue(counts);
+			}
+
+            
+            
+            function getUserWithMostCheckoutsAndThenWhichMovieTheyDidCheckOutTheMost(rentals) {
+				var counts = {};
+				var rentalsAsArrays = splitRentalString(rentals);
+				for (var i = 0; i < rentalsAsArrays.length; i++){
+					var userNum = rentalsAsArrays[i][0];
+					if (counts[userNum] == undefined) {
+						counts[userNum] = 1;
+					} else {
+						counts[userNum] += 1;
+					}
+				}
+				
+				var mostUser = getKeyWithMaxValue(counts);
+                var favUser = findMostUserRentals(mostUser);
+
+                return handleFavUser(favUser);
+            }
+            
+            function handleFavUser(user) {
+                var counts = {};
+                for (var i = 0; i < user.length; i++) {
+                    var userNum = user[i][1];
+                    if (counts[userNum] == undefined) {
+                        counts[userNum] = 1;
+                    } else {
+                        counts[userNum] += 1;
                     }
                 }
-                return maxEl;
+                return moviesArray[getKeyWithMaxValue(counts) - 1];
             }
             
-            var mostCheckedOutMovie = moviesArray[mode(arrayOfMovieIds) - 1];
-            console.log("array of movie ids most checked out:" + mode(arrayOfMovieIds));
-
+            function findMostUserRentals(user) {
+                var favUserArray = [];
+                var rentalsAsArrays = splitRentalString(rentalsArray);
+                for (var i = 0; i < rentalsAsArrays.length; i++){
+                    if (rentalsAsArrays[i][0] == user) {
+                        favUserArray.push(rentalsAsArrays[i]);
+                    }
+                }
+                console.log(favUserArray);
+                return favUserArray;
+            }
+            
+            function getMostCheckedOutMovie(rentals) {
+				var counts = {};
+				var rentalsAsArrays = splitRentalString(rentals);
+				for (var i = 0; i < rentalsAsArrays.length; i++){
+					var userNum = rentalsAsArrays[i][1];
+					
+					if (counts[userNum] == undefined) {
+						counts[userNum] = 1;
+					} else {
+						counts[userNum] += 1;
+					}
+				}
+				
+				return moviesArray[getKeyWithMaxValue(counts) - 1];
+			}
+            
+            
+            
+            
+            
+            function getLeastCheckedOutMovie(rentals) {
+				var counts = {};
+				var rentalsAsArrays = splitRentalString(rentals);
+				for (var i = 0; i < rentalsAsArrays.length; i++){
+					var userNum = rentalsAsArrays[i][1];
+					
+					if (counts[userNum] == undefined) {
+						counts[userNum] = 100;
+					} else {
+						counts[userNum] -= 1;
+					}
+				}
+				
+				return moviesArray[getKeyWithMaxValue(counts) - 1];
+			}
+            
+            
+            
+            function getKeyWithLeastValue(obj) {
+				var minSoFar = 100;
+				var minKeySoFar = "";
+				for (var key in obj) {
+					if (obj[key] < minSoFar) {
+						maxSoFar = obj[key];
+						maxKeySoFar = key;
+					}
+				}
+				return maxKeySoFar;
+			}
+            
+            //go through the rentalsArray, get the middle value (which is the movie id), and find out which movie id shows up the most in the array, then
 			//Which movie was the most checked-out movie of 2014?
-			document.getElementById('most-movie').innerHTML = mostCheckedOutMovie;
+			document.getElementById('most-movie').innerHTML = getMostCheckedOutMovie(rentalsArray);
 
 			//Which movie was the least checked-out movie of 2014?
-			document.getElementById('least-movie').innerHTML = "???";
+			document.getElementById('least-movie').innerHTML = getLeastCheckedOutMovie(rentalsArray);
 
 			//For the user with the most checkouts, which movie did they checkout the most?
-			document.getElementById('favorite-movie').innerHTML = "???";
+			document.getElementById('favorite-movie').innerHTML = getUserWithMostCheckoutsAndThenWhichMovieTheyDidCheckOutTheMost(rentalsArray);
 		}
 	</script>
 </body>
